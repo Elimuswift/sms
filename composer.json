@@ -1,0 +1,20 @@
+{
+    "name": "elimuswift/sms",
+    "description": "An SMS wrapper for major sms gateways",
+    "type": "library",
+    "require": {
+    	"simplesoftwareio/simple-sms": "3.0.*"
+    },
+    "autoload": {
+        "classmap": [
+            "database"
+        ],
+        "psr-4": {
+            "Elimuswift\\SMS\\": "src/"
+        }
+    },
+    "require-dev": {},
+    "license": "MIT",
+    "minimum-stability": "dev",
+
+}
