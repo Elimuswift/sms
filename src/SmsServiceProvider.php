@@ -7,6 +7,7 @@ use Elimuswift\SMS\SMS;
 use Elimuswift\SMS\DriverManager;
 class SmsServiceProvider extends ServiceProvider
 {
+    protected $defer = false; 
     /**
      * Bootstrap the application services.
      *
