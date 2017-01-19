@@ -6,9 +6,6 @@
     	"simplesoftwareio/simple-sms": "3.0.*"
     },
     "autoload": {
-        "classmap": [
-            "database"
-        ],
         "psr-4": {
             "Elimuswift\\SMS\\": "src/"
         }
