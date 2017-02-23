@@ -26,8 +26,8 @@ class Sematime
     private $_requestUrl;
 
     protected $_method='GET';
-    private $SMS_URL = "https://api.sematime.com/v1/{userId}/messages";
-    private $URL = "https://api.sematime.com/v1/{userId}";
+    private $SMS_URL = "http://api.sematime.com/v1/{userId}/messages";
+    private $URL = "http://api.sematime.com/v1/{userId}";
 
     private $OK = 200;
     private $CREATED = 201;

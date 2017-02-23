@@ -10,7 +10,6 @@
             "Elimuswift\\SMS\\": "src/"
         }
     },
-    "require-dev": {},
     "license": "MIT",
     "minimum-stability": "dev"
 }
