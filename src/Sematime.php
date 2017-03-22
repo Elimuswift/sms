@@ -1,4 +1,5 @@
 <?php
+
 namespace Elimuswift\SMS;
 
 use SimpleSoftwareIO\SMS\DoesNotReceive;
@@ -7,40 +8,47 @@ use SimpleSoftwareIO\SMS\Drivers\AbstractSMS;
 use SimpleSoftwareIO\SMS\Drivers\DriverInterface;
 
 /**
- * undocumented class
+ * Send sms messages through sematime API.
  *
- * @package default
- * @author 
+ * @author Master Weez <wizqydy@gmail.com>
  **/
- class Sematime extends AbstractSMS implements DriverInterface
+class Sematime extends AbstractSMS implements DriverInterface
 {
-	use DoesNotReceive;
-	 
-	public function __construct($api_key, $username)
-	{
-		$this->sema = new Sematime\Sematime($api_key, $username);
-	}
+    use DoesNotReceive;
 
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author 
-	 **/
-	public function send(OutgoingMessage $message)
-	{
-		return $this->sema->sendMessage($message->getTo(), $message->composeMessage());
-	}
-	/**
+    public function __construct($api_key, $username)
+    {
+        $this->sema = new Sematime\Sematime($api_key, $username);
+    }
+
+//end __construct()
+
+    /**
+     * Send the sms message.
+     *
+     * @return GuzzleHttp\Client;
+     *
+     * @param OutgoingMessage $message
+     **/
+    public function send(OutgoingMessage $message)
+    {
+        return $this->sema->sendMessage($message->getTo(), $message->composeMessage());
+    }
+
+//end send()
+
+    /**
      * Creates many IncomingMessage objects and sets all of the properties.
      *
      * @param string $rawMessage
      *
      * @return mixed
      */
-     protected function processReceive($rawMessage)
-     {
-     	return $rawMessage;
-     }
+    protected function processReceive($rawMessage)
+    {
+        return $rawMessage;
+    }
 
-} // END public class AfricasTalkingDriver
+//end processReceive()
+}//end class
+ // END public class AfricasTalkingDriver
