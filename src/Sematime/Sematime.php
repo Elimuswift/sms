@@ -58,7 +58,7 @@ class Sematime
 
 //end boot()
 
-    public function sendMessage($to_, $message_, array $options_ = array())
+    public function sendMessage($to_, $message_, array $options_ = [])
     {
         if (count($to_) == 0 || strlen($message_) == 0) {
             throw new SematimeAPIException('No recipients found or message is empty');
@@ -93,7 +93,7 @@ class Sematime
             return json_decode($response->getBody());
         }
 
-        throw new SematimeAPIException($response->getBody().$response->getStatusCode(), 1);
+        throw new SematimeAPIException($response->getBody() . $response->getStatusCode(), 1);
     }
 
 //end send()

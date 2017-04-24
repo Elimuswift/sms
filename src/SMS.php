@@ -1,11 +1,10 @@
 <?php
-namespace Elimuswift\SMS;
 
+namespace Elimuswift\SMS;
 
 use Illuminate\Container\Container;
 use SimpleSoftwareIO\SMS\SMS as BaseSMS;
 use SimpleSoftwareIO\SMS\Drivers\DriverInterface;
-
 
 class SMS extends BaseSMS
 {
@@ -23,12 +22,8 @@ class SMS extends BaseSMS
      */
     protected $container;
 
-
     public function __construct(DriverInterface $driver)
     {
         parent::__construct($driver);
     }
-
-    
-
 }

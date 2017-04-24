@@ -5,20 +5,18 @@ namespace Elimuswift\SMS\Providers;
 use Illuminate\Support\ServiceProvider;
 use Elimuswift\SMS\SMS;
 use Elimuswift\SMS\DriverManager;
+
 class SmsServiceProvider extends ServiceProvider
 {
-    protected $defer = false; 
+    protected $defer = false;
+
     /**
      * Bootstrap the application services.
-     *
-     * @return void
      */
-
-
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/config/sms.php' => config_path('sms.php'),
+            __DIR__ . '/config/sms.php' => config_path('sms.php'),
         ]);
     }
 
@@ -27,7 +25,7 @@ class SmsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('GuzzleHttp\ClientInterface','\GuzzleHttp\Client');
+        $this->app->singleton('GuzzleHttp\ClientInterface', '\GuzzleHttp\Client');
         $this->registerSender();
         $this->app->singleton('sms', function ($app) {
             $sms = new SMS($app['sms.sender']);
@@ -71,6 +69,6 @@ class SmsServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array('sms', 'sms.sender');
+        return ['sms', 'sms.sender'];
     }
 }
