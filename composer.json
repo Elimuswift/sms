@@ -3,7 +3,8 @@
     "description": "An SMS wrapper for major sms gateways",
     "type": "library",
     "require": {
-        "guzzlehttp/guzzle" : "~6.0"
+        "guzzlehttp/guzzle" : "~6.0",
+        "weezqyd/africastalking":"dev-master"
     },
     "autoload": {
         "psr-4": {
