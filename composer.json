@@ -3,13 +3,12 @@
     "description": "An SMS wrapper for major sms gateways",
     "type": "library",
     "require": {
-    	"simplesoftwareio/simple-sms": "3.0.*"
+        "guzzlehttp/guzzle" : "~6.0"
     },
     "autoload": {
         "psr-4": {
             "Elimuswift\\SMS\\": "src/"
         }
     },
-    "license": "MIT",
-    "minimum-stability": "dev"
+    "license": "MIT"
 }

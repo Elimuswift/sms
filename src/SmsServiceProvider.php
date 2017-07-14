@@ -1,10 +1,8 @@
 <?php
 
-namespace Elimuswift\SMS\Providers;
+namespace Elimuswift\SMS;
 
 use Illuminate\Support\ServiceProvider;
-use Elimuswift\SMS\SMS;
-use Elimuswift\SMS\DriverManager;
 
 class SmsServiceProvider extends ServiceProvider
 {
@@ -25,12 +23,9 @@ class SmsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('GuzzleHttp\ClientInterface', '\GuzzleHttp\Client');
         $this->registerSender();
         $this->app->singleton('sms', function ($app) {
-            $sms = new SMS($app['sms.sender']);
-            $this->setSMSDependencies($sms, $app);
-
+            $sms = new SMS($app['sms.sender'], $app);
             //Set the from setting
             if ($app['config']->has('sms.from')) {
                 $sms->alwaysFrom($app['config']['sms']['from']);
@@ -48,18 +43,6 @@ class SmsServiceProvider extends ServiceProvider
         $this->app->bind('sms.sender', function ($app) {
             return (new DriverManager($app))->driver();
         });
-    }
-
-    /**
-     * Set a few dependencies on the sms instance.
-     *
-     * @param SMS $sms
-     * @param  $app
-     */
-    private function setSMSDependencies($sms, $app)
-    {
-        $sms->setContainer($app);
-        $sms->setQueue($app['queue']);
     }
 
     /**

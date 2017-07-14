@@ -2,28 +2,154 @@
 
 namespace Elimuswift\SMS;
 
-use Illuminate\Container\Container;
-use SimpleSoftwareIO\SMS\SMS as BaseSMS;
-use SimpleSoftwareIO\SMS\Drivers\DriverInterface;
+use Closure;
+use Illuminate\Support\Str;
+use Elimuswift\SMS\Contracts\DriverInterface;
+use Illuminate\Contracts\Foundation\Application;
 
-class SMS extends BaseSMS
+class SMS
 {
     /**
      * The Driver Interface instance.
      *
-     * @var \SimpleSoftwareIO\SMS\Drivers\DriverInterface
+     * @var \Elimuswift\SMS\Drivers\DriverInterface
      */
     protected $driver;
 
     /**
      * The IOC Container.
      *
-     * @var \Illuminate\Container\Container
+     * @var Illuminate\Contracts\Foundation\Application
      */
-    protected $container;
+    protected $app;
 
-    public function __construct(DriverInterface $driver)
+    /**
+     * The global from address.
+     *
+     * @var string
+     */
+    protected $from;
+
+    /**
+     * Creates the SMS instance.
+     *
+     * @param DriverInterface $driver
+     */
+    public function __construct(DriverInterface $driver, Application $app)
     {
-        parent::__construct($driver);
+        $this->driver = $driver;
+        $this->app = $app;
+    }
+
+    /**
+     * Changes the set SMS driver.
+     *
+     * @param $driver
+     */
+    public function driver($driver)
+    {
+        $this->app['sms.sender'] = $this->app->share(function ($app) use ($driver) {
+            return (new DriverManager($app))->driver($driver);
+        });
+
+        $this->driver = $this->app['sms.sender'];
+    }
+
+    /**
+     * Send a SMS.
+     *
+     * @param string   $view     The desired view.
+     * @param array    $data     The data that needs to be passed into the view.
+     * @param \Closure $callback The methods that you wish to fun on the message.
+     *
+     * @return \Elimuswift\SMS\OutgoingMessage The outgoing message that was sent.
+     */
+    public function send($view, $data, $callback, Closure $responseCallback = null)
+    {
+        $data['message'] = $message = $this->createOutgoingMessage();
+
+        //We need to set the properties so that we can later pass this onto the Illuminate Mailer class if the e-mail gateway is used.
+        $message->view($view);
+        $message->data($data);
+
+        call_user_func($callback, $message);
+
+        $this->driver->send($message, $responseCallback);
+
+        return $message;
+    }
+
+    /**
+     * Creates a new Message instance.
+     *
+     * @return \Elimuswift\SMS\OutgoingMessage
+     */
+    protected function createOutgoingMessage()
+    {
+        $message = new OutgoingMessage($this->app['view']);
+
+        //If a from address is set, pass it along to the message class.
+        if (isset($this->from)) {
+            $message->from($this->from);
+        }
+
+        return $message;
+    }
+
+    /**
+     * Sets the IoC app.
+     *
+     * @param Container $app
+     */
+    public function setContainer(Container $app)
+    {
+        $this->app = $app;
+    }
+
+    /**
+     * Sets the number that message should always be sent from.
+     *
+     * @param $number
+     */
+    public function alwaysFrom($number)
+    {
+        $this->from = $number;
+    }
+
+    /**
+     * Receives a SMS via a push request.
+     *
+     * @return IncomingMessage
+     */
+    public function receive()
+    {
+        //Passes all of the request onto the driver.
+        $raw = $this->app['Illuminate\Support\Facades\Input'];
+
+        return $this->driver->receive($raw);
+    }
+
+    /**
+     * Queries the provider for a list of messages.
+     *
+     * @param array $options The options to pass onto a provider.  See each provider for a list of options.
+     *
+     * @return array Returns an array of IncomingMessage objects.
+     */
+    public function checkMessages(array $options = [])
+    {
+        return $this->driver->checkMessages($options);
+    }
+
+    /**
+     * Gets a message by it's ID.
+     *
+     * @param $messageId The requested messageId.
+     *
+     * @return IncomingMessage
+     */
+    public function getMessage($messageId)
+    {
+        return $this->driver->getMessage($messageId);
     }
 }

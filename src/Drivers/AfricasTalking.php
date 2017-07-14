@@ -1,11 +1,11 @@
 <?php
 
-namespace Elimuswift\SMS;
+namespace Elimuswift\SMS\Drivers;
 
-use SimpleSoftwareIO\SMS\DoesNotReceive;
-use SimpleSoftwareIO\SMS\OutgoingMessage;
-use SimpleSoftwareIO\SMS\Drivers\AbstractSMS;
-use SimpleSoftwareIO\SMS\Drivers\DriverInterface;
+use AfricasTalking\Gateway;
+use Elimuswift\SMS\DoesNotReceive;
+use Elimuswift\SMS\OutgoingMessage;
+use Elimuswift\SMS\Contracts\DriverInterface;
 
 /**
  * Send sms messages via africas talking.
@@ -23,27 +23,23 @@ class AfricasTalking extends AbstractSMS implements DriverInterface
      * @param string $username Africas talkig username
      * @param string $from     Africas talkig from number
      **/
-    public function __construct($api_key, $username, $from)
+    public function __construct(Gateway $gateway)
     {
-        $this->atsms = new SmsSender($api_key, $username);
-        $this->from = $from;
+        $this->atsms = $gateway;
     }
-
-//end __construct()
 
     /**
      * Send sms message.
      *
-     * @return object Elimuswift\SMS\SmsSender
+     * @return object Elimuswift\SMS\AfricasTalking
      *
-     * @param object $message SimpleSoftwareIO\SMS\OutgoingMessage
+     * @param object $message Elimuswift\SMS\OutgoingMessage
      **/
     public function send(OutgoingMessage $message)
     {
-        return $this->atsms->from($this->from)->sendMessage($message->getTo(), $message->composeMessage());
+        return $this->atsms->sms->sendMessage($message->getTo(), $message->composeMessage());
     }
 
-//end send()
 
     /**
      * Creates many IncomingMessage objects and sets all of the properties.
@@ -56,7 +52,4 @@ class AfricasTalking extends AbstractSMS implements DriverInterface
     {
         return $rawMessage;
     }
-
-//end processReceive()
-}//end class
- // END public class AfricasTalkingDriver
+}
