@@ -1,11 +1,11 @@
 <?php
 
-namespace Elimuswift\SMS\Facades\SMS;
+namespace Elimuswift\SMS\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * Class SMS
+ * Class SMS.
  */
 class SMS extends Facade
 {
