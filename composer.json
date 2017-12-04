@@ -11,5 +11,12 @@
             "Elimuswift\\SMS\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Elimuswift\\SMS\\SmsServiceProvider"
+            ]
+        }
+    },
     "license": "MIT"
 }
