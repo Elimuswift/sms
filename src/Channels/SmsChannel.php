@@ -2,6 +2,7 @@
 
 namespace Elimuswift\SMS\Channels;
 
+use Elimuswift\SMS\Facades\SMS;
 use Illuminate\Notifications\Notification;
 
 class SmsChannel
@@ -16,7 +17,7 @@ class SmsChannel
     {
         $message = $notification->toSms($notifiable);
         $to = $message->content['to'];
-        app()->sms->send(
+        SMS::send(
             $message->content['smsView'],
             $message->content['data'],
             function ($sms) use ($to) {

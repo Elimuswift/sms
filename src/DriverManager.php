@@ -40,7 +40,7 @@ class DriverManager extends Manager
     public function createAfricastalkingDriver()
     {
         $config = $this->app['config']->get('sms.africastalking', []);
-        $adapter = new Gateway($config['username'], $config['api_key']);
+        $adapter = new Gateway($config['username'], $config['api_key'], $config['sandbox']);
 
         return new Drivers\AfricasTalking($adapter);
     }
