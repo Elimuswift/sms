@@ -105,7 +105,7 @@ This driver sends messages through the [Twilio](https://www.twilio.com/sms) mess
 <a id="docs-send-sms"></a>
 #### Sending an SMS
 
-With eerything set up the right way sending an SMS notification would be as simple as:
+With everything set up the right way sending an SMS notification would be as simple as:
 
 ```php
 
@@ -134,7 +134,7 @@ SMS::send('My bulk SMS notification', [], function ($sms) use($contacts) {
 
 #### Send a Blade View
 
-You can also use a view to send the sms notification, just pass the name of the view as the first argument to the `send()` method, the second parameter is the data to be passed to the view.
+You can also use a view to send the sms notification, The first parameter is the view file that you would like to use. The second is the data that you wish to pass to the view. The final parameter is a callback that will set all of the options on the message closure.
 ```php
 use App\Order;
 
@@ -142,6 +142,23 @@ $order = Order::with('user')->first();
 
 SMS::send('sms.order-shiped', compact('order'), function($sms) use($order) {
     $sms->to($order->user->phone_number);
+});
+```
+
+####  Driver
+
+The driver method will switch the provider during runtime.
+```php
+//Will send through default provider set in the config file.
+SMS::send('Your SMS Message', [], function($sms) {
+    $sms->to('+15555555555');
+});
+
+SMS::driver('nexmo');
+
+//Will send through Nexmo
+SMS::send('Your SMS Message', [], function($sms) {
+    $sms->to('+15555555555');
 });
 ```
 
