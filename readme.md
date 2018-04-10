@@ -57,7 +57,8 @@ You must run the following command to save your configuration files to your loca
 This will copy the configuration files to your `config` folder.
 
 
-## Documentation
+### Get Started
+
 ####  Africas Talkig
 
 To enable the AfricasTalking driver just change config file to:
