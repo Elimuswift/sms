@@ -86,7 +86,7 @@ This driver sends messages through the [Nexmo](https://www.nexmo.com/product/mes
 ```
 
 <a id="docs-twilio-driver"></a>
-######  Twilio Driver
+#### Twilio Driver
 
 This driver sends messages through the [Twilio](https://www.twilio.com/sms) messaging service.  It is very reliable and capable of sending messages to mobile phones worldwide.
 
@@ -101,7 +101,7 @@ This driver sends messages through the [Twilio](https://www.twilio.com/sms) mess
         ]
     ];
 ```
-
+<a id="docs-send-sms"></a>
 #### Sending an SMS
 
 With eerything set up the right way sending an SMS notification would be as simple as:
@@ -114,7 +114,7 @@ SMS::send('My first SMS message', [], function ($sms) {
 	$sms->to('07xxxxxxxx');
 }); 
 ```
-#### Multiple Recipints
+#### Multiple Recipients
 
 Sending to multiple Contacts 
 
@@ -133,7 +133,7 @@ SMS::send('My bulk SMS notification', [], function ($sms) use($contacts) {
 
 #### Send a Blade View
 
-You can also use a view to send the sms notification. just pass the name of the view as the first argument to the `send()` method, the second parameter is data to be passed to the view.
+You can also use a view to send the sms notification, just pass the name of the view as the first argument to the `send()` method, the second parameter is the data to be passed to the view.
 ```php
 use App\Order;
 
@@ -146,8 +146,7 @@ SMS::send('sms.order-shiped', compact('order'), function($sms) use($order) {
 
 ### Using Laravel Notifications
 
-The package comes with a notification chanel for sending SMS messages using laravels notification system.
-    - To get stated add `routeNotificationForSMS()` method in your notifiable. this method should return the notifiables's phone number.
+The package comes with a notification chanel for sending SMS messages using laravels notification system. To get stated add `routeNotificationForSMS()` method in your notifiable. this method should return the notifiables's phone number.
 
 ```php
     /**
@@ -165,7 +164,7 @@ The package comes with a notification chanel for sending SMS messages using lara
 Now you can use the channel in your `via()` method inside the notification:
 
 ```php
-use Elimuswift\SMS\Chenels\SMSChannel;
+use Elimuswift\SMS\Chennels\SMSChannel;
 use Elimuswift\SMS\Notifications\SMSMessage;
 use Illuminate\Notifications\Notification;
 
