@@ -17,15 +17,20 @@ class AfricasTalking extends AbstractSMS implements DriverInterface
     use DoesNotReceive;
 
     /**
+     * The gateway for sending SMS via africas talking.
+     *
+     * @var Gateway
+     */
+    protected $gateway;
+
+    /**
      * Create a new intance of AfricasTalking driver.
      *
-     * @param string $api_key  Africas talkig apikey
-     * @param string $username Africas talkig username
-     * @param string $from     Africas talkig from number
+     * @param Gateway $getway Africas talkig Gateway
      **/
     public function __construct(Gateway $gateway)
     {
-        $this->atsms = $gateway;
+        $this->gateway = $gateway;
     }
 
     /**
@@ -37,9 +42,8 @@ class AfricasTalking extends AbstractSMS implements DriverInterface
      **/
     public function send(OutgoingMessage $message)
     {
-        return $this->atsms->sms->sendMessage($message->getTo(), $message->composeMessage());
+        return $this->gateway->sms->sendMessage($message->getTo(), $message->composeMessage());
     }
-
 
     /**
      * Creates many IncomingMessage objects and sets all of the properties.

@@ -14,7 +14,7 @@ class SmsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/config/sms.php' => config_path('sms.php'),
+            __DIR__.'/config/sms.php' => config_path('sms.php'),
         ]);
     }
 
@@ -24,7 +24,7 @@ class SmsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerSender();
-        $this->app->singleton('sms', function ($app) {
+        $this->app->bind('sms', function ($app) {
             $sms = new SMS($app['sms.sender'], $app);
             //Set the from setting
             if ($app['config']->has('sms.from')) {

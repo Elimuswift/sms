@@ -47,10 +47,9 @@ class SMS
      */
     public function driver($driver)
     {
-        $this->app->bind('sms.sender', function ($app) use ($driver) {
-            return (new DriverManager($app))->driver($driver);
-        }, true);
-
+        $this->app->extend('sms.sender', function ($sender) use ($driver) {
+            return (new DriverManager($this->app))->driver($driver);
+        });
         $this->driver = $this->app['sms.sender'];
     }
 
@@ -150,5 +149,15 @@ class SMS
     public function getMessage($messageId)
     {
         return $this->driver->getMessage($messageId);
+    }
+
+    /**
+     * Get the current diver .
+     *
+     * @return \Elimuswift\SMS\Contracts\DriverInterface
+     */
+    public function getDriver()
+    {
+        return $this->driver;
     }
 }
