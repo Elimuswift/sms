@@ -2,6 +2,7 @@
 
 namespace Elimuswift\SMS;
 
+use GuzzleHttp\Client;
 use AfricasTalking\Gateway;
 use Illuminate\Support\Manager;
 use Elimuswift\SMS\Drivers\NexmoSMS;

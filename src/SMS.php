@@ -3,7 +3,6 @@
 namespace Elimuswift\SMS;
 
 use Closure;
-use Illuminate\Support\Str;
 use Elimuswift\SMS\Contracts\DriverInterface;
 use Illuminate\Contracts\Foundation\Application;
 
@@ -48,9 +47,9 @@ class SMS
      */
     public function driver($driver)
     {
-        $this->app['sms.sender'] = $this->app->share(function ($app) use ($driver) {
+        $this->app->bind('sms.sender', function ($app) use ($driver) {
             return (new DriverManager($app))->driver($driver);
-        });
+        }, true);
 
         $this->driver = $this->app['sms.sender'];
     }
@@ -58,11 +57,11 @@ class SMS
     /**
      * Send a SMS.
      *
-     * @param string   $view     The desired view.
-     * @param array    $data     The data that needs to be passed into the view.
-     * @param \Closure $callback The methods that you wish to fun on the message.
+     * @param string   $view     the desired view
+     * @param array    $data     the data that needs to be passed into the view
+     * @param \Closure $callback the methods that you wish to fun on the message
      *
-     * @return \Elimuswift\SMS\OutgoingMessage The outgoing message that was sent.
+     * @return \Elimuswift\SMS\OutgoingMessage the outgoing message that was sent
      */
     public function send($view, $data, $callback, Closure $responseCallback = null)
     {
@@ -134,7 +133,7 @@ class SMS
      *
      * @param array $options The options to pass onto a provider.  See each provider for a list of options.
      *
-     * @return array Returns an array of IncomingMessage objects.
+     * @return array returns an array of IncomingMessage objects
      */
     public function checkMessages(array $options = [])
     {
@@ -144,7 +143,7 @@ class SMS
     /**
      * Gets a message by it's ID.
      *
-     * @param $messageId The requested messageId.
+     * @param $messageId the requested messageId
      *
      * @return IncomingMessage
      */
