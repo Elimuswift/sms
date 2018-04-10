@@ -27,7 +27,7 @@ Elimuswift SMS is a package for sending SMS using various SMS providers. This pa
 First, add the Simple SMS package to your `require` in your `composer/json` file:
 
     "require": {
-        "elimuswift/sms": "dev-master"
+        "elimuswift/sms": "~2.0"
     }
 
 Next, run the `composer update` command.  This will install the package into your Laravel application.
