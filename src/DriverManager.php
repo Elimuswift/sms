@@ -5,6 +5,7 @@ namespace Elimuswift\SMS;
 use GuzzleHttp\Client;
 use AfricasTalking\Gateway;
 use Illuminate\Support\Manager;
+use Twilio\Rest\Client as Twilio;
 use Elimuswift\SMS\Drivers\NexmoSMS;
 use Elimuswift\SMS\Drivers\TwilioSMS;
 
@@ -73,10 +74,8 @@ class DriverManager extends Manager
         $config = $this->app['config']->get('sms.twilio', []);
 
         return new TwilioSMS(
-            new \Services_Twilio($config['account_sid'], $config['auth_token']),
-            $config['auth_token'],
-            $this->app['request']->url(),
-            $config['verify']
+            new Twilio($config['account_sid'], $config['auth_token']),
+            $config['auth_token']
         );
     }
 }

@@ -44,7 +44,7 @@ class TwilioSMS extends AbstractSMS implements DriverInterface
      * @param $url
      * @param bool $verify
      */
-    public function __construct(Services_Twilio $twilio, $authToken, $url, $verify = false)
+    public function __construct(Twilio $twilio, $authToken, $url, $verify = false)
     {
         $this->twilio = $twilio;
         $this->authToken = $authToken;
@@ -63,11 +63,9 @@ class TwilioSMS extends AbstractSMS implements DriverInterface
         $composeMessage = $message->composeMessage();
 
         foreach ($message->getTo() as $to) {
-            $this->twilio->account->messages->create([
-                'To' => $to,
+            $this->twilio->messages->create($to, [
                 'From' => $from,
                 'Body' => $composeMessage,
-                'MediaUrl' => $message->getAttachImages(),
             ]);
         }
     }
@@ -99,7 +97,7 @@ class TwilioSMS extends AbstractSMS implements DriverInterface
         $start = array_key_exists('start', $options) ? $options['start'] : 0;
         $end = array_key_exists('end', $options) ? $options['end'] : 25;
 
-        $rawMessages = $this->twilio->account->messages->getIterator($start, $end, $options);
+        $rawMessages = $this->twilio->messages->getIterator($start, $end, $options);
         $incomingMessages = [];
 
         foreach ($rawMessages as $rawMessage) {
@@ -120,7 +118,7 @@ class TwilioSMS extends AbstractSMS implements DriverInterface
      */
     public function getMessage($messageId)
     {
-        $rawMessage = $this->twilio->account->messages->get($messageId);
+        $rawMessage = $this->twilio->messages->get($messageId);
         $incomingMessage = $this->createIncomingMessage();
         $this->processReceive($incomingMessage, $rawMessage);
 
