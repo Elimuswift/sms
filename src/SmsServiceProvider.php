@@ -23,12 +23,16 @@ class SmsServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->mergeConfigFrom(
+            __DIR__.'/config/sms.php',
+            'sms'
+        );
         $this->registerSender();
         $this->app->bind('sms', function ($app) {
             $sms = new SMS($app['sms.sender'], $app);
             //Set the from setting
             if ($app['config']->has('sms.from')) {
-                $sms->alwaysFrom($app['config']['sms']['from']);
+                $sms->alwaysFrom($app['config']->get('sms.from'));
             }
 
             return $sms;

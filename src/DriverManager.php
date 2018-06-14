@@ -8,6 +8,7 @@ use Illuminate\Support\Manager;
 use Twilio\Rest\Client as Twilio;
 use Elimuswift\SMS\Drivers\NexmoSMS;
 use Elimuswift\SMS\Drivers\TwilioSMS;
+use Elimuswift\SMS\Drivers\WinSMS;
 
 /**
  * Create driver instances defined in config file.
@@ -77,5 +78,17 @@ class DriverManager extends Manager
             new Twilio($config['account_sid'], $config['auth_token']),
             $config['auth_token']
         );
+    }
+
+    /**
+     * Create an instance of the WinSMS driver.
+     *
+     * @return \Elimuswift\SMS\Drivers\WinSMS
+     */
+    protected function createWinsmsDriver()
+    {
+        $config = $this->app['config']->get('sms.winsms', []);
+
+        return new WinSMS($config['api_key']);
     }
 }
