@@ -42,6 +42,10 @@ class AfricasTalking extends AbstractSMS implements DriverInterface
      **/
     public function send(OutgoingMessage $message)
     {
+        $options = [
+            'from' => $message->getFrom(),
+        ];
+        
         return $this->gateway->sms->sendMessage($message->getTo(), $message->composeMessage());
     }
 
