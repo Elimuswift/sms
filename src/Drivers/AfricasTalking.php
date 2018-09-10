@@ -46,7 +46,11 @@ class AfricasTalking extends AbstractSMS implements DriverInterface
             'from' => $message->getFrom(),
         ];
         
-        return $this->gateway->sms->sendMessage($message->getTo(), $message->composeMessage());
+        return $this->gateway->sms->sendMessage(
+            $message->getTo(), 
+            $message->composeMessage(),
+            $options
+        );
     }
 
     /**
