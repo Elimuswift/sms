@@ -3,13 +3,14 @@
 namespace Elimuswift\SMS;
 
 use Illuminate\View\Factory;
+use InvalidArgumentException;
 
 class OutgoingMessage
 {
     /**
      * The Illuminate view factory.
      *
-     * @var \Illuminate\View\Factory
+     * @var Factory
      */
     protected $views;
 
@@ -42,11 +43,11 @@ class OutgoingMessage
     protected $to;
 
     /**
-     * Whether a message is a MMS or SMS.
+     * User Message Id .
      *
      * @var bool
      */
-    protected $mms = false;
+    protected $messageId = null;
 
     /**
      * Array of attached images.
@@ -68,17 +69,24 @@ class OutgoingMessage
     /**
      * Composes a message.
      *
-     * @return \Illuminate\View\Factory
+     * @return Factory|string
      */
     public function composeMessage()
     {
         // Attempts to make a view.
-         // If a view can not be created; it is assumed that simple message is passed through.
+        // If a view can not be created; it is assumed that simple message is passed through.
         try {
             return $this->views->make($this->view, $this->data)->render();
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             return $this->view;
         }
+    }
+
+    private static function uniqId($length = 13)
+    {
+        $bytes = openssl_random_pseudo_bytes(ceil($length / 2));
+
+        return substr(bin2hex($bytes), 0, $length);
     }
 
     /**
@@ -102,9 +110,29 @@ class OutgoingMessage
     }
 
     /**
+     * Sets the numbers messages will be sent from.
+     *
+     * @param string $messageId Holds the message Id for  that messages
+     */
+    public function messageId($messageId)
+    {
+        $this->messageId = $messageId;
+    }
+
+    /**
+     * Gets the message id for the message.
+     *
+     * @return string
+     */
+    public function getMessageId()
+    {
+        return $this->messageId ?: static::uniqId(17);
+    }
+
+    /**
      * Sets the to addresses.
      *
-     * @param string $number  Holds the number that a message will be sent to.
+     * @param string $number Holds the number that a message will be sent to.
      * @param string $carrier The carrier the number is on.
      *
      * @return $this
@@ -112,7 +140,7 @@ class OutgoingMessage
     public function to($number, $carrier = null)
     {
         $this->to[] = [
-            'number'  => $number,
+            'number' => $number,
             'carrier' => $carrier,
         ];
 

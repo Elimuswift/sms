@@ -56,8 +56,8 @@ class SMS
     /**
      * Send a SMS.
      *
-     * @param string   $view     the desired view
-     * @param array    $data     the data that needs to be passed into the view
+     * @param string $view the desired view
+     * @param array $data the data that needs to be passed into the view
      * @param \Closure $callback the methods that you wish to fun on the message
      *
      * @return \Elimuswift\SMS\OutgoingMessage the outgoing message that was sent
@@ -71,10 +71,24 @@ class SMS
         $message->data($data);
 
         call_user_func($callback, $message);
+        $response = $this->driver->send($message, $responseCallback);
 
-        $this->driver->send($message, $responseCallback);
+        return $this->runCallbacks($response, $callback);
+    }
 
-        return $message;
+    /**
+     * Run callbacks
+     *
+     * @param $payload
+     * @param $callback
+     * @return mixed
+     */
+    protected function runCallbacks($payload, $callback)
+    {
+        if (is_callable($callback)) {
+            return $callback($payload);
+        }
+        return $payload;
     }
 
     /**

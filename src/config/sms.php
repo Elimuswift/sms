@@ -20,6 +20,12 @@ return [
         'encoding' => env('NEXMO_ENCODING', 'unicode'), // Can be "unicode" or "gsm"
     ],
 
+    'emalify' => [
+        'client_id' => env('EMALIFY_KEY'),
+        'client_secret' => env('EMALIFY_SECRET'),
+        'project_id' => env('EMALIFY_PROJECT'), // Can be "unicode" or "gsm"
+    ],
+
     'twilio' => [
         'account_sid' => env('TWILIO_SID', 'Your Twilio SID'),
         'auth_token' => env('TWILIO_TOKEN', 'Your Twilio Token'),

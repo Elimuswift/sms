@@ -18,5 +18,9 @@
             ]
         }
     },
-    "license": "MIT"
+    "minimum-stability": "alpha",
+    "license": "MIT",
+    "require-dev": {
+        "roamtech/gateway-api": "^0.0.7@alpha"
+    }
 }

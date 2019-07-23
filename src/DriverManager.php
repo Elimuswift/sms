@@ -2,8 +2,11 @@
 
 namespace Elimuswift\SMS;
 
+use Elimuswift\SMS\Drivers\AfricasTalking;
+use Elimuswift\SMS\Drivers\EmalifySMS;
 use GuzzleHttp\Client;
 use AfricasTalking\Gateway;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Manager;
 use Twilio\Rest\Client as Twilio;
 use Elimuswift\SMS\Drivers\NexmoSMS;
@@ -38,7 +41,7 @@ class DriverManager extends Manager
     /**
      * create africastalking gateway driver.
      *
-     * @return Elimuswift\SMS\AfricasTalking
+     * @return AfricasTalking
      **/
     public function createAfricastalkingDriver()
     {
@@ -76,14 +79,28 @@ class DriverManager extends Manager
 
         return new TwilioSMS(
             new Twilio($config['account_sid'], $config['auth_token']),
-            $config['auth_token']
+            $config['auth_token'],
+            ''
         );
+    }
+
+    /**
+     * Create an instance of the Twillo driver.
+     *
+     * @return EmalifySMS
+     * @throws BindingResolutionException
+     */
+    protected function createEmalifyDriver()
+    {
+        $client = $this->app->make(\Roamtech\Gateway\Client::class);
+
+        return new EmalifySMS($client);
     }
 
     /**
      * Create an instance of the WinSMS driver.
      *
-     * @return \Elimuswift\SMS\Drivers\WinSMS
+     * @return WinSMS
      */
     protected function createWinsmsDriver()
     {
