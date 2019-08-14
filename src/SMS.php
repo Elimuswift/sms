@@ -11,7 +11,7 @@ class SMS
     /**
      * The Driver Interface instance.
      *
-     * @var \Elimuswift\SMS\Drivers\DriverInterface
+     * @var Drivers\DriverInterface
      */
     protected $driver;
 
@@ -58,9 +58,10 @@ class SMS
      *
      * @param string $view the desired view
      * @param array $data the data that needs to be passed into the view
-     * @param \Closure $callback the methods that you wish to fun on the message
+     * @param Closure $callback the methods that you wish to fun on the message
+     * @param Closure|null $responseCallback
      *
-     * @return \Elimuswift\SMS\OutgoingMessage the outgoing message that was sent
+     * @return OutgoingMessage the outgoing message that was sent
      */
     public function send($view, $data, $callback, Closure $responseCallback = null)
     {
@@ -71,9 +72,9 @@ class SMS
         $message->data($data);
 
         call_user_func($callback, $message);
-        $response = $this->driver->send($message, $responseCallback);
+        $response = $this->driver->send($message);
 
-        return $this->runCallbacks($response, $callback);
+        return $this->runCallbacks($response, $responseCallback);
     }
 
     /**
@@ -94,7 +95,7 @@ class SMS
     /**
      * Creates a new Message instance.
      *
-     * @return \Elimuswift\SMS\OutgoingMessage
+     * @return OutgoingMessage
      */
     protected function createOutgoingMessage()
     {
@@ -168,7 +169,7 @@ class SMS
     /**
      * Get the current diver .
      *
-     * @return \Elimuswift\SMS\Contracts\DriverInterface
+     * @return DriverInterface
      */
     public function getDriver()
     {

@@ -35,11 +35,11 @@ class EmalifySMS extends AbstractSMS implements DriverInterface
     /**
      * Send sms message.
      *
-     * @param OutgoingMessage $message Elimuswift\SMS\OutgoingMessage
-     **@param \Closure|null $callback
+     * @param OutgoingMessage $message \Elimuswift\SMS\OutgoingMessage
+     *
      * @return Response Guzzle PSR response
      */
-    public function send(OutgoingMessage $message, \Closure $callback = null)
+    public function send(OutgoingMessage $message)
     {
         $options = [
             'from' => $message->getFrom(),
